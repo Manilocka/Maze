@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class MazeGenerator
 {
-    public int Width = 50;
-    public int Height = 50;
+    public int Width = 40;
+    public int Height = 40;
 
     public Maze GenerateMaze()
     {
@@ -112,3 +112,4 @@ public class MazeGenerator
         return new Vector2Int(furthest.X, furthest.Y);
     }
 }
+

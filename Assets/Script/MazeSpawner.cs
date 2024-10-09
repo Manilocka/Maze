@@ -27,3 +27,4 @@ public class MazeSpawner : MonoBehaviour
         HintRenderer.DrawPath();
     }
 }
+
