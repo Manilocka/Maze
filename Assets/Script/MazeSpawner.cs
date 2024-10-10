@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MazeSpawner : MonoBehaviour
 {
     public Cell CellPrefab;
-    public Vector3 CellSize = new Vector3(1,1,0);
-    public HintRenderer HintRenderer;
+    public GameObject playerPrefab;
+    public GameObject cubePrefab; 
+    public Vector3 CellSize = new Vector3(1, 1, 0);
 
     public Maze maze;
 
@@ -24,7 +26,61 @@ public class MazeSpawner : MonoBehaviour
             }
         }
 
-        HintRenderer.DrawPath();
+        SpawnPlayer();
+        SpawnCubes(10); 
+    }
+
+    private void SpawnPlayer()
+    {
+        List<MazeGeneratorCell> validSpawnCells = new List<MazeGeneratorCell>();
+
+        for (int x = 0; x < maze.cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < maze.cells.GetLength(1); y++)
+            {
+                if (maze.cells[x, y].WallLeft == false || maze.cells[x, y].WallBottom == false)
+                {
+                    validSpawnCells.Add(maze.cells[x, y]);
+                }
+            }
+        }
+
+        if (validSpawnCells.Count > 0)
+        {
+            MazeGeneratorCell spawnCell = validSpawnCells[Random.Range(0, validSpawnCells.Count)];
+            Vector3 spawnPosition = new Vector3(spawnCell.X * CellSize.x, 5.0f, spawnCell.Y * CellSize.z);
+            Object.Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
+        }
+    }
+
+    private void SpawnCubes(int count)
+    {
+        List<MazeGeneratorCell> validSpawnCells = new List<MazeGeneratorCell>();
+
+
+        for (int x = 0; x < maze.cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < maze.cells.GetLength(1); y++)
+            {
+                if (maze.cells[x, y].WallLeft == false && maze.cells[x, y].WallBottom == false)
+                {
+                    validSpawnCells.Add(maze.cells[x, y]);
+                }
+            }
+        }
+
+        // Спавним кубы
+        for (int i = 0; i < count; i++)
+        {
+            if (validSpawnCells.Count > 0)
+            {
+                MazeGeneratorCell spawnCell = validSpawnCells[Random.Range(0, validSpawnCells.Count)];
+                Vector3 spawnPosition = new Vector3(spawnCell.X * CellSize.x, 0.5f, spawnCell.Y * CellSize.z); 
+
+                validSpawnCells.Remove(spawnCell);
+
+                Object.Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
+            }
+        }
     }
 }
-
