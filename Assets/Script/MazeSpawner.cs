@@ -38,7 +38,7 @@ public class MazeSpawner : MonoBehaviour
         {
             for (int y = 0; y < maze.cells.GetLength(1); y++)
             {
-                if (maze.cells[x, y].WallLeft == false || maze.cells[x, y].WallBottom == false)
+                if (!(maze.cells[x, y].WallLeft && maze.cells[x, y].WallBottom))
                 {
                     validSpawnCells.Add(maze.cells[x, y]);
                 }
